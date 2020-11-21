@@ -6,23 +6,38 @@
   let vidaDimensions = [88,56];
   let devastacaoDimensions = [160];
   let devastacaoDimensions2 = [180];
+  let gameOverDimensions = [1000,16];
   let probFoco = 25;
   let reserva;
   let focos = [];
   let caveiras = [];
   let devastacoes = [];
+  let Nvidas = [];
   let gameLoop;
   let score = 0;
 
   function init() {
     reserva = new Reserva();
     pontuacao = new Pontuacao();
+    Criar5Arvores();
     gameLoop = setInterval(run, 1000/FPS);
+
   }
 
   window.addEventListener("keydown", function (e) {
-    if (e.key === 'o') {
+    if (e.key === 's') {
+      focos = [];
+      caveiras = [];
+      arvoresVida = [];
+      score = 0;
       clearInterval(gameLoop);
+      clearTimeout(surge);
+      clearTimeout(desvastar);
+      document.body.innerHTML = "";
+      init();
+    }
+    if (e.key === 'p' ) {
+      alert("jogo pausado, clique em OK para continuar");
     }
   })
 
@@ -44,13 +59,14 @@
       this.element.style.height = `${focoDimensions[1]}px`;
       this.element.style.left = `${Math.floor((Math.random() * (gameDimensions[0]-focoDimensions[0])))}px`;
       this.element.style.top = `${Math.floor((Math.random() * (gameDimensions[1]-focoDimensions[1])))}px`;
+      this.clicado = false;
       reserva.element.appendChild(this.element);
-
-      /*Next tentive*/
+      
       this.element.addEventListener('click',(e) => {  
         e.target.remove();
         score+=10;
         leftPad(score,5);
+        this.clicado = true;
       });
     }
     get coordenadas(){
@@ -62,6 +78,7 @@
       this.element.style.width = '0px';
       this.element.style.height = '0px';
       return coord;
+      
     }
   }
 
@@ -77,6 +94,7 @@
       this.element.style.left = value_left;
       this.element.style.top = value_top;
     }
+    
   }
   class DevastacaoCaveira {
     constructor () {
@@ -97,7 +115,7 @@
         this.element.className = "pontuacao";
         this.element.style.width = `${vidaDimensions[0]}px`;
         this.element.style.height = `${vidaDimensions[1]}px`;
-        this.element.style.right = `${gameDimensions[0]-593}px`;
+        this.element.style.right = `${gameDimensions[0]-1050}px`;
         this.element.style.bottom =`${gameDimensions[1]-440}px`;
         this.element.appendChild(document.createTextNode("00000"));
         document.body.appendChild(this.element);
@@ -111,16 +129,18 @@
       this.element.style.height = `${focoDimensions[1]}px`;
       this.element.style.left = `${Math.floor((Math.random() * (gameDimensions[0]-focoDimensions[0])))}px`;
       this.element.style.top = `${Math.floor((Math.random() * (gameDimensions[1]-focoDimensions[1])))}px`;
+      this.clicado = false;
       reserva.element.appendChild(this.element);
 
-      /*Next tentative*/
+
       this.element.addEventListener('click',(e) => {  
         e.target.remove();
         score+=20;
         leftPad(score,5);
+        this.clicado = true;
       });
     }
-    get coordenadas(){
+    get coordenadas () {
       var coord = [];
       coord.push(this.element.style.left);
       coord.push(this.element.style.top);
@@ -131,26 +151,86 @@
       return coord;
     }
   }
+  class Vidas {
+    constructor () {
+      this.element = document.createElement("div");
+      this.element.className = "vidas";
+      this.element.style.width = `${vidaDimensions[0]}px`;
+      this.element.style.height = `${vidaDimensions[1]}px`;
+      this.element.style.right = `${gameDimensions[0]+110}px`;
+      this.element.style.bottom =`${gameDimensions[1]-440}px`;
+      document.body.appendChild(this.element);      
+    }
+    menosUm(){
+      this.element.style.height = "0px";
+    }
+  }
+  class GameOver {
+    constructor () {
+
+      this.element = document.createElement("div");
+      this.element.className = "gameOver";
+      this.element.style.width = `${gameOverDimensions[0]}px`;
+      this.element.style.height = `${gameOverDimensions[1]}px`;
+      this.element.style.right = "100px";
+      this.element.style.bottom =`${gameDimensions[1]-440}px`;
+      this.element.appendChild(document.createTextNode("GAME OVER!\n"));
+      this.element.appendChild(document.createTextNode("Your Score: " + score));
+      reserva.element.appendChild(this.element);
+      clearInterval(gameLoop);
+      clearTimeout(surge);
+      clearTimeout(desvastar);
+    }
+
+  }
 
 
   function devasteIncendio(){
     if (focos.length > 0) {
       var fogo = focos.shift();
+
+      if(!fogo.clicado){
+
       var coord = fogo.coordenadas; 
       var devastacao = new DevastacaoIncendio();
       devastacao.SwapPX(coord[0],coord[1]);
-      devastacoes.push(devastacao);        
-      }
+      devastacoes.push(devastacao);
+      if(Nvidas.length > 1){
+        Nvidas.pop().element.style.height = '0px';
+        }
+      else{
+        while(Nvidas.length){
+          Nvidas.pop().element.style.height = '0px';
+        }
+        let fim = new GameOver();
+        
+        }
+      }        
     }
+  }
+
   function devasteCaveira () {
       if (caveiras.length > 0) {
         var caveira = caveiras.shift();
+
+        if(!caveira.clicado){
         var coord = caveira.coordenadas; 
         var devastacao = new DevastacaoCaveira();
         devastacao.SwapPX(coord[0],coord[1]);
-        devastacoes.push(devastacao);        
-        }
-      }
+        devastacoes.push(devastacao);
+        if(Nvidas.length > 2){
+          Nvidas.pop().element.style.height = '0px';
+          Nvidas.pop().element.style.height = '0px';
+          }
+        else{
+          while(Nvidas.length){
+            Nvidas.pop().element.style.height = '0px';
+          }
+          let fim = new GameOver();
+          }
+        }       
+     }
+  }
 
 
   function SurgirCaveira () {
@@ -159,19 +239,25 @@
       devastar = setTimeout(devasteCaveira, 2000/FPS);
     }
 
-function InteiroAleatorio(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+  function InteiroAleatorio (min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
-function leftPad(value, totalWidth, paddingChar) {
-  var length = totalWidth - value.toString().length + 1;
-  
-  pontuador = document.getElementsByClassName("pontuacao");
-  pontuador[0].removeChild(pontuador[0].firstChild);
-  pontuador[0].appendChild(document.createTextNode(Array(length).join(paddingChar || '0') + value));
-};
+  function leftPad (value, totalWidth, paddingChar) {
+    var length = totalWidth - value.toString().length + 1;
+    
+    pontuador = document.getElementsByClassName("pontuacao");
+    pontuador[0].removeChild(pontuador[0].firstChild);
+    pontuador[0].appendChild(document.createTextNode(Array(length).join(paddingChar || '0') + value));
+  };
+
+  function Criar5Arvores(){
+    for(i = 0; i < 5; i++){
+    Nvidas[i] = new Vidas();
+    }
+  }
 
   function run () {
     if (Math.random() * 100 < probFoco) {
@@ -180,7 +266,7 @@ function leftPad(value, totalWidth, paddingChar) {
       desvastar = setTimeout(devasteIncendio, 2000/FPS);
     }
     if(Math.random() * 150 < probFoco){
-      surge = setTimeout(SurgirCaveira, 24000/InteiroAleatorio(1,4));
+      surge = setTimeout(SurgirCaveira, (24000/InteiroAleatorio(1,4))/FPS);
     }
   }
 
