@@ -1,9 +1,20 @@
+body{
+	width: 100vw;
+	height: 100vh;
+	background:black;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
 .reserva {
   background-image: url('assets/reserva.png');
-  position: absolute;
+  position: relative;
   left: 0;
   top: 0;
   z-index: 1;
+  border: 5px solid #000;
 }
 
 .foco-incendio {
@@ -16,4 +27,13 @@
 	background-image: url('assets/caveira.gif');
   position: absolute;
   z-index: 2;
+}
+
+.pontuacao{
+  color: whitesmoke;
+	display: block;
+	position: relative;
+	font-size: 60px;
+  font-style: oblique;
+  z-index:5;
 }
