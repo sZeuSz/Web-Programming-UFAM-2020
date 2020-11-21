@@ -1,11 +1,12 @@
 body{
 	width: 100vw;
 	height: 100vh;
-	background:black;
+	background: #2F4F4F;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	align-items: center;
+  align-items: center;
+
 }
 
 .reserva {
@@ -30,10 +31,20 @@ body{
 }
 
 .pontuacao{
-  color: whitesmoke;
 	display: block;
 	position: relative;
 	font-size: 60px;
   font-style: oblique;
-  z-index:5;
+  z-index = 2;
+}
+
+.devastacao-incendio{
+	background-image: url('assets/devastacao.png');
+  position: absolute;
+  z-index: 2;
+}
+.devastacao-caveira{
+	background-image: url('assets/devastacao.png');
+  position: absolute;
+  z-index: 2;
 }
