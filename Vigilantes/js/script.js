@@ -183,6 +183,6 @@ function leftPad(value, totalWidth, paddingChar) {
       surge = setTimeout(SurgirCaveira, 24000/InteiroAleatorio(1,4));
     }
   }
-  console.log(focos);
+
   init();
 })();
