@@ -1,12 +1,12 @@
 (function () {
 
   const FPS = 1; 
-  let gameDimensions = [1243, 960];
-  let focoDimensions = [100, 130];
-  let vidaDimensions = [88,56];
-  let devastacaoDimensions = [160];
-  let devastacaoDimensions2 = [180];
-  let gameOverDimensions = [1000,16];
+  let gameDimensions = [(1243/2), (960/2)];
+  let focoDimensions = [(100/2), (130/2)];
+  let vidaDimensions = [(88/2),(56/2)];
+  let devastacaoDimensions = [80];
+  let devastacaoDimensions2 = [90];
+  let gameOverDimensions = [(1000/2),(16/2)];
   let probFoco = 25;
   let reserva;
   let focos = [];
@@ -30,10 +30,10 @@
       caveiras = [];
       arvoresVida = [];
       score = 0;
+      window.location.reload();
       clearInterval(gameLoop);
       clearTimeout(surge);
       clearTimeout(desvastar);
-      document.body.innerHTML = "";
       init();
     }
     if (e.key === 'p' ) {
@@ -47,7 +47,8 @@
       this.element.className = "reserva";
       this.element.style.width = `${gameDimensions[0]}px`;
       this.element.style.height = `${gameDimensions[1]}px`;
-      document.body.appendChild(this.element);
+      //document.body.appendChild(this.element);
+      document.getElementById("jogo").appendChild(this.element);
     }
   }
 
@@ -115,16 +116,17 @@
         this.element.className = "pontuacao";
         this.element.style.width = `${vidaDimensions[0]}px`;
         this.element.style.height = `${vidaDimensions[1]}px`;
-        this.element.style.right = `${gameDimensions[0]-1050}px`;
-        this.element.style.bottom =`${gameDimensions[1]-440}px`;
+        this.element.style.right = `${gameDimensions[0]-1175}px`;
+        this.element.style.bottom =`${gameDimensions[1]-505}px`;
         this.element.appendChild(document.createTextNode("00000"));
-        document.body.appendChild(this.element);
+        //document.body.appendChild(this.element);
+        document.getElementById("Cabecalho").appendChild(this.element);  
       }
     }
   class Caveira {
     constructor () {
       this.element = document.createElement("div");
-      this.element.className = "caveira-incendio";
+      this.element.className = "caveira";
       this.element.style.width = `${focoDimensions[0]}px`;
       this.element.style.height = `${focoDimensions[1]}px`;
       this.element.style.left = `${Math.floor((Math.random() * (gameDimensions[0]-focoDimensions[0])))}px`;
@@ -157,9 +159,10 @@
       this.element.className = "vidas";
       this.element.style.width = `${vidaDimensions[0]}px`;
       this.element.style.height = `${vidaDimensions[1]}px`;
-      this.element.style.right = `${gameDimensions[0]+110}px`;
+      this.element.style.right = `${gameDimensions[0]-440}px`;
       this.element.style.bottom =`${gameDimensions[1]-440}px`;
-      document.body.appendChild(this.element);      
+      //document.body.appendChild(this.element); 
+      document.getElementById("Cabecalho").appendChild(this.element);      
     }
     menosUm(){
       this.element.style.height = "0px";
@@ -172,8 +175,8 @@
       this.element.className = "gameOver";
       this.element.style.width = `${gameOverDimensions[0]}px`;
       this.element.style.height = `${gameOverDimensions[1]}px`;
-      this.element.style.right = "100px";
-      this.element.style.bottom =`${gameDimensions[1]-440}px`;
+      this.element.style.right = "50px";
+      this.element.style.bottom =`${gameDimensions[1]-450}px`;
       this.element.appendChild(document.createTextNode("GAME OVER!\n"));
       this.element.appendChild(document.createTextNode("Your Score: " + score));
       reserva.element.appendChild(this.element);
