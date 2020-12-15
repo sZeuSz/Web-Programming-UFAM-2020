@@ -1,67 +1,84 @@
 body{
-	width: 100vw;
-	height: 100vh;
-	background: #0d3a3a;
+	background: #063535;
+}
+
+#jogo{
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-  	align-items: center;
+	align-items: center;
+}
+
+#Cabecalho{
+	display: block;
+	width: 223px;
+	height: 57px;
+	right: -340px; 
+	position: relative; 
 
 }
 
 .reserva {
 	background-image: url('assets/reserva.png');
-  	position: relative;
-  	left: 0;
-  	top: 0;
-  	z-index: 1;
-  	border: 5px solid #000;
+	position: relative;
+	left: 0;
+	top: 0;
+	z-index: 1;
+	border: 5px solid #000;
+	background-size: cover;
+	overflow: hidden;
 }
 
 .foco-incendio {
 	background-image: url('assets/foco.gif');
-  	position: absolute;
-  	z-index: 2;
+	position: absolute;
+	z-index: 3;
+	background-size: cover;
 }
 
-.caveira-incendio{
-	background-image: url('assets/caveira.gif');
-  	position: absolute;
-  	z-index: 2;
+.vidas {
+	background-image: url('assets/arvore.png');
+	display: inline-block;
+	position: initial;
+	overflow: hidden;
+	background-size: cover;
 }
 
 .pontuacao{
 	display: block;
 	position: relative;
-	font-size: 60px;
-        font-style: oblique;
-  	z-index: 2;
+	font-size: 30px;
+	background-size: cover;
+  
 }
 
 .devastacao-incendio{
 	background-image: url('assets/devastacao.png');
-  position: absolute;
-  z-index: 2;
-}
-.devastacao-caveira{
-	background-image: url('assets/devastacao.png');
-  position: absolute;
-  z-index: 2;
-}
-
-.vidas {
-	background-image: url('assets/arvore.png');
-	display: block;
-	position: relative;
+	position: absolute;
+	z-index: 2;
+	background-size: cover;  
 }
 
 .gameOver{
 	font-size: 60px;
-	font-style: inherit;
-	color: black;
+	font-style: oblique;
+	color: #460505;
 	z-index: 3;
 	position: absolute;
-	font-weight: bold;
-	text-align: center;
+	top: 40%;
 }
+
+.caveira{
+	background-image: url('assets/caveira.gif');
+	position: absolute;
+	z-index: 2;
+	background-size: cover;
+}
+.devastacao-caveira{
+	background-image: url('assets/devastacao.png');
+	position: absolute;
+  z-index: 2;
+  background-size: cover;  
+}
+
 
